@@ -32,4 +32,5 @@
     <bool name="display_need_screen_resolution">true</bool>
     <bool name="display_need_hdr_function">false</bool>
     <bool name="display_need_sdr_function">false</bool>
+    <string name="display_filter_outputmode"></string>
 </resources>
