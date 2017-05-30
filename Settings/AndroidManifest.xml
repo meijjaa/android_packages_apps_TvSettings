@@ -436,7 +436,7 @@
             android:name=".system.PowerKeyActionDefinitionActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
-            android:exported="false" />
+            android:exported="false" >
         </activity>
         <activity
             android:name=".system.PowerKeyActivity"
