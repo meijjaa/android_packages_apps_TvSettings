@@ -74,6 +74,10 @@ public class AboutFragment extends LeanbackPreferenceFragment implements
     private static final String KEY_SAFETY_LEGAL = "safetylegal";
     private static final String KEY_DEVICE_NAME = "device_name";
     private static final String KEY_RESTART = "restart";
+    private static final String KEY_ROM_VERSION = "rom_version";
+    private static final String PROPERTY_ROM_VERSION = "ro.cm.display.version";
+    private static final String KEY_BUILD_DATE = "build_date";
+    private static final String PROPERTY_BUILD_DATE = "ro.build.date";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
 
@@ -130,6 +134,10 @@ public class AboutFragment extends LeanbackPreferenceFragment implements
         findPreference(KEY_DEVICE_MODEL).setSummary(Build.MODEL + DeviceInfoUtils.getMsvSuffix());
         findPreference(KEY_EQUIPMENT_ID)
                 .setSummary(getSystemPropertySummary(PROPERTY_EQUIPMENT_ID));
+        findPreference(KEY_ROM_VERSION)
+                .setSummary(getSystemPropertySummary(PROPERTY_ROM_VERSION));
+        findPreference(KEY_BUILD_DATE)
+                .setSummary(getSystemPropertySummary(PROPERTY_BUILD_DATE));
 
         final Preference buildNumberPref = findPreference(KEY_BUILD_NUMBER);
         buildNumberPref.setSummary(Build.DISPLAY);
@@ -260,6 +268,7 @@ public class AboutFragment extends LeanbackPreferenceFragment implements
     public boolean onPreferenceTreeClick(Preference preference) {
         switch (preference.getKey()) {
             case KEY_FIRMWARE_VERSION:
+            case KEY_ROM_VERSION:
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 500)) {
@@ -269,6 +278,7 @@ public class AboutFragment extends LeanbackPreferenceFragment implements
                     }
 
                     Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.putExtra("is_lineage", preference.getKey().equals(KEY_ROM_VERSION));
                     intent.setClassName("android",
                             com.android.internal.app.PlatLogoActivity.class.getName());
                     try {
@@ -294,7 +304,7 @@ public class AboutFragment extends LeanbackPreferenceFragment implements
                         if (mDevHitToast != null) {
                             mDevHitToast.cancel();
                         }
-                        mDevHitToast = Toast.makeText(getActivity(), R.string.show_dev_on,
+                        mDevHitToast = Toast.makeText(getActivity(), R.string.show_dev_on_cm,
                                 Toast.LENGTH_LONG);
                         mDevHitToast.show();
                         // This is good time to index the Developer Options
@@ -309,7 +319,7 @@ public class AboutFragment extends LeanbackPreferenceFragment implements
                         }
                         mDevHitToast = Toast
                                 .makeText(getActivity(), getResources().getQuantityString(
-                                        R.plurals.show_dev_countdown, mDevHitCountdown,
+                                        R.plurals.show_dev_countdown_cm, mDevHitCountdown,
                                         mDevHitCountdown),
                                         Toast.LENGTH_SHORT);
                         mDevHitToast.show();
@@ -318,7 +328,7 @@ public class AboutFragment extends LeanbackPreferenceFragment implements
                     if (mDevHitToast != null) {
                         mDevHitToast.cancel();
                     }
-                    mDevHitToast = Toast.makeText(getActivity(), R.string.show_dev_already,
+                    mDevHitToast = Toast.makeText(getActivity(), R.string.show_dev_already_cm,
                             Toast.LENGTH_LONG);
                     mDevHitToast.show();
                 }
